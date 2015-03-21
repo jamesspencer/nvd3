@@ -359,6 +359,19 @@
         return Elem;
     };
 
+    //Finds the total scrollTop of a given DOM element.
+    //Looks up the entire ancestry of an element, up to the first relatively positioned element.
+    nv.tooltip.findTotalScrollTop = function ( Elem, initialTop ) {
+        var scrollTop = initialTop;
+
+        do {
+            if( !isNaN( Elem.scrollTop ) ) {
+                scrollTop += (Elem.scrollTop);
+            }
+        } while( Elem !== window && (Elem = Elem.parentNode) );
+        return scrollTop;
+    };
+
     //Finds the total offsetTop of a given DOM element.
     //Looks up the entire ancestry of an element, up to the first relatively positioned element.
     nv.tooltip.findTotalOffsetTop = function ( Elem, initialTop ) {
@@ -396,7 +409,7 @@
             width = parseInt(container.offsetWidth),
             windowWidth = nv.utils.windowSize().width,
             windowHeight = nv.utils.windowSize().height,
-            scrollTop = window.pageYOffset,
+            scrollTop = nv.tooltip.findTotalScrollTop(container, window.pageYOffset),
             scrollLeft = window.pageXOffset,
             left, top;
 
