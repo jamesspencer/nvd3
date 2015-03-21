@@ -1,4 +1,4 @@
-/* nvd3 version 1.7.1(https://github.com/novus/nvd3) 2015-02-05 */
+/* nvd3 version 1.7.1(https://github.com/novus/nvd3) 2015-03-21 */
 (function(){
 
 // set up main nv object on window
@@ -757,6 +757,19 @@ nv.nearestValueIndex = function (values, searchVal, threshold) {
         return Elem;
     };
 
+    //Finds the total scrollTop of a given DOM element.
+    //Looks up the entire ancestry of an element, up to the first relatively positioned element.
+    nv.tooltip.findTotalScrollTop = function ( Elem, initialTop ) {
+        var scrollTop = initialTop;
+
+        do {
+            if( !isNaN( Elem.scrollTop ) ) {
+                scrollTop += (Elem.scrollTop);
+            }
+        } while( Elem !== window && (Elem = Elem.parentNode) );
+        return scrollTop;
+    };
+
     //Finds the total offsetTop of a given DOM element.
     //Looks up the entire ancestry of an element, up to the first relatively positioned element.
     nv.tooltip.findTotalOffsetTop = function ( Elem, initialTop ) {
@@ -794,7 +807,7 @@ nv.nearestValueIndex = function (values, searchVal, threshold) {
             width = parseInt(container.offsetWidth),
             windowWidth = nv.utils.windowSize().width,
             windowHeight = nv.utils.windowSize().height,
-            scrollTop = window.pageYOffset,
+            scrollTop = nv.tooltip.findTotalScrollTop(container, window.pageYOffset),
             scrollLeft = window.pageXOffset,
             left, top;
 
